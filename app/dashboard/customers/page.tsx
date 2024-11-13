@@ -3,6 +3,8 @@
 import { GET_POSTS, GET_USERS } from '@/app/assets/config';
 import { useEffect, useState } from 'react';
 
+import Link from 'next/link';
+
 export interface Post {
   userId: number,
   id: number,
@@ -38,6 +40,7 @@ export default function page() {
 
   const [users, setUser] = useState<User[]>([])
   const [posts, setPost] = useState<Post[]>([])
+  const [userSelected, setUserSelected] = useState<User>()
 
   useEffect(() => {
     fetch(GET_USERS)
@@ -45,46 +48,56 @@ export default function page() {
       .then((json) => {
         setUser(json);
       });
-  }, [])
+  }, []);
 
-  const getPost = useEffect(() => {
-    fetch(GET_USERS)
-      .then((response) => response.json())
-      .then((json) => {
-        setUser(json);
-      });
-  }, [])
-
-  function getPostByUserId(userId: number) {
-    fetch(`${GET_POSTS}/${userId}`)
+  const findPostById = (user: User) => {
+    fetch(`${GET_POSTS}?userId=${user.id}`)
       .then((response) => response.json())
       .then((json) => {
         setPost(json);
+        setUserSelected(user)
         console.log(posts);
-      }); 
-  }
+      });
+  };
 
-  function buscar(id: number) {
-    getPostByUserId(id);
-  }
+  console.log();
+  
 
   return (
     <div>
 
-      <br /><br />
+      {
+        <div>
+          {userSelected && (
+            <div>
+              { `${userSelected.id} | ${userSelected.name}` }
+            </div>
+          )}
+        </div>
+      }
 
+      {
+          posts && (
+            posts.map((post) => {
+                return (
+                  <section className='p-6' key={post.id}>
+                    { post?.id }
+                    { post?.title }
+                    { post?.body }
+                  </section>
+                )
+            }) 
+          )
+       }
+      <br />
       <ul>
         {
-          users?.map((user: User) => {
+          users?.map((item: User) => {
             return (
-              <>
-                <section key={user.id}>
-                  <li>{user.id} | {user.name} | {user.username} | {user.email}</li>
-                  <button className="border p-5 bg-background" onClick={() => {
-                    buscar(user.id)
-                  }}> Get post by id </button>
-                </section>
-              </>
+              <section key={item.id}>
+                <li>{item.id} | {item.name} | {item.username} | {item.email}</li>
+                <Link href={`/dashboard/customers/${item.id}`}  className="border p-5"> Get post by id </Link>
+              </section>
             )
           })
         }
