@@ -11,14 +11,12 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const {name, gender, zodiacSign, email} = body
 
-    console.log(name, gender, zodiacSign, email);
-    
-
     const userCreated = await prisma.users.create({'data':{'name': name, 'gender': gender, 'zodiacSign': zodiacSign, 'email': email }});
     const listUsers = await prisma.users.findMany({
-      skip: 3,
-      take: 4,
-    })
+      // skip: 3,
+      // take: 4,
+    });
+
     const UsersLenght = await prisma.users.count({});
 
     return NextResponse.json(
