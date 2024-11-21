@@ -6,11 +6,13 @@ export async function POST(req: NextRequest) {
       const body = await req.json()
       const {skipR, takeR} = body
       
-      const listUsers = await prisma.users.findMany({
+      console.log(`desde: ${skipR} hasta: ${takeR}`);
+
+      const listUsers = await prisma.user.findMany({
         skip: skipR,
         take: takeR,
       })
-      const UsersLenght = await prisma.users.count({});
+      const UsersLenght = await prisma.user.count({});
   
       return NextResponse.json(
         { 
