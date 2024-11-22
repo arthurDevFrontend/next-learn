@@ -1,14 +1,21 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { IUserFaker } from "../constext/user/user.interfaces";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
+
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const GeneratePDF = dynamic( ()=> import("../components/GeneratePDF"), {ssr: false})
 
 const URL_API_FAKE_PAGINATOR = 'http://localhost:3000/api/paginator';
 
+
 export default function Page() {
+
+  const ref = useRef(null);
 
   const [users, setUsers] = useState<IUserFaker[] | null>();
   const [totalRegs, setTotalRegs] = useState<number>(0);
@@ -43,13 +50,17 @@ export default function Page() {
 
   return (
     <>
-      <Link
-        href="/user/create"
-        className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
-      >
-        <span>Crear un nuevo usuario</span> <ArrowRightIcon className="w-5 md:w-6" />
-      </Link>
-      <div className="relative overflow-x-auto mt-5">
+      <div className="flex flex-row justify-between gap-5 mb-10">
+        <Link     href="/user/create"
+     
+          className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
+        >
+          <span>Crear un nuevo usuario</span> <ArrowRightIcon className="w-5 md:w-6" />
+        </Link>
+        <GeneratePDF html={ref}/>
+
+      </div>
+      <div className="relative overflow-x-auto mt-5" ref={ref}>
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>

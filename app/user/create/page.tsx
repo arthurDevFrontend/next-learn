@@ -7,15 +7,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { redirect } from 'next/navigation';
 
 export default function page() {
 
   const { register, handleSubmit } = useForm();
-
-
-  console.log(redirect);
-  
 
   // const [user, setUser] = useContext<any>(UserContext)
   const [user, setUser] = useState<IUserFaker | null>()
@@ -60,8 +55,6 @@ export default function page() {
         setTotalRegs(lenght)
         setUser(null);
       });
-
-      redirect('/user')
   }
 
   const onImageChange = (event: any) => {
@@ -77,7 +70,7 @@ export default function page() {
           href="/user"
           className="flex items-center self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
         >
-          <span></span> <ArrowLeftIcon className="w-5 md:w-6" />
+        <ArrowLeftIcon className="w-5 md:w-6" />
         </Link>
         <button className="flex items-center self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base" onClick={() => {
           generateUserRandom()
