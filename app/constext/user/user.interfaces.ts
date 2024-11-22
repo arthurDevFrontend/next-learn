@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 export type IUserFaker = {
   name: string;
   gender: string;

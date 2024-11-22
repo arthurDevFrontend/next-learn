@@ -7,10 +7,15 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { redirect } from 'next/navigation';
 
 export default function page() {
 
   const { register, handleSubmit } = useForm();
+
+
+  console.log(redirect);
+  
 
   // const [user, setUser] = useContext<any>(UserContext)
   const [user, setUser] = useState<IUserFaker | null>()
@@ -55,6 +60,8 @@ export default function page() {
         setTotalRegs(lenght)
         setUser(null);
       });
+
+      redirect('/user')
   }
 
   const onImageChange = (event: any) => {
