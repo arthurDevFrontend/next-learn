@@ -1,18 +1,21 @@
 import { prisma } from "@/app/lib/prisma";
+import { includes } from "lodash";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
     try {
       const body = await req.json()
       const {skipR, takeR} = body
-      
-      console.log(`desde: ${skipR} hasta: ${takeR}`);
 
-      const listUsers = await prisma.user.findMany({
+      const listUsers = await prisma.users.findMany({
         skip: skipR,
         take: takeR,
-      })
-      const UsersLenght = await prisma.user.count({});
+        include: {
+          images: true
+        }
+      },
+    )
+      const UsersLenght = await prisma.users.count({});
   
       return NextResponse.json(
         { 

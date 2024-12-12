@@ -5,24 +5,22 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
-  console.log("Encontre la API");
-
   try {
     const body = await req.json();
     const { name, gender, zodiacSign, email } = body;
 
-    const userCreated = await prisma.user.create({
+    const userCreated = await prisma.users.create({
       data: {
         name: name,
         gender: gender,
+        age: 50,
         zodiacSign: zodiacSign,
-        email: email,
-        image: ''
-      },
+        email: email
+      }
     });
-    const listUsers = await prisma.user.findMany();
 
-    const UsersLenght = await prisma.user.count();
+    const listUsers = await prisma.users.findMany();
+    const UsersLenght = await prisma.users.count();
 
     return NextResponse.json(
       {
